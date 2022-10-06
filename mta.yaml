@@ -1,0 +1,39 @@
+_schema-version: "3.2"
+ID: node_hana_app
+description: A Fiori application.
+version: 0.0.1
+
+modules: 
+ - name: node-hana-srv
+   type: nodejs
+   path: .
+   parameters:
+    memory: 256M
+   build-parameters:
+    builder: custom
+    commands: []
+    ignore:
+    - node_modules
+    - package-lock.json
+    - default-env.json
+    - Makefile_20220930223854.mta 
+   requires:
+    - name: vis_xsuaa
+    - name: vis_hdb
+   provides:
+      - name:  node-hana-srv-api
+        public: true
+        properties:
+          url: ${default-url} 
+
+resources:
+  - name: vis_xsuaa
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service: xsuaa-srv
+      service-name: xsuaa-srv
+  - name: vis_hdb
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service: hdi
+      service-name: HANA_HDI
